@@ -1,6 +1,6 @@
 import pandas as pd
 
-def gen_squad(players: pd.DataFrame, cheapest_player: float) -> pd.DataFrame:
+def gen_squad(players: pd.DataFrame, cheapest_player: float, consider_value: str = "Post Quality") -> pd.DataFrame:
     """
     Generate the squad of 15 that fit the FPL criteria and produce the highest quality
 
@@ -13,8 +13,10 @@ def gen_squad(players: pd.DataFrame, cheapest_player: float) -> pd.DataFrame:
     """
 
 
-    squad = pd.DataFrame(columns=["Post Quality", "Quality", "Pos.", "Team", "Price"], index=players.index)
+    squad = pd.DataFrame(columns=[consider_value, "Quality", "Pos.", "Team", "Price"], index=players.index)
     squad.drop_duplicates(inplace=True)
+
+    players = players.sort_values(consider_value, ascending=False)
 
     allowed_per_position = {"GKP": 2, "DEF": 5, "MID": 5, "FWD": 3}
 
